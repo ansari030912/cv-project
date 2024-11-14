@@ -1,0 +1,74 @@
+body {
+  font-family: Arial, sans-serif;
+}
+.custom-quill .ql-container {
+  height: 200px !important; /* Ensures the container height */
+}
+
+.custom-quill .ql-editor {
+  height: 100% !important; /* Makes the editor fill the container */
+}
+.a4-container {
+  width: 794px; /* Width of A4 in pixels at 96 DPI */
+  height: 1123px; /* Height of A4 in pixels at 96 DPI */
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional shadow for emphasis */
+
+  /* Center the container */
+  position: relative;
+  margin: 0 auto;
+}
+
+.a4-container > * {
+  width: 100%;
+  height: 100%;
+  transform-origin: top left;
+  transform: scale(1);
+}
+
+/* Responsive scaling */
+@media (max-width: 900px) {
+  .a4-container {
+    transform: scale(0.8);
+    transform-origin: top left;
+  }
+}
+
+@media (max-width: 600px) {
+  .a4-container {
+    transform: scale(0.6);
+    transform-origin: top left;
+  }
+}
+/* Custom scrollbar styles */
+.container::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.container::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Background color of the scrollbar track */
+}
+
+.container::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Round edges of the scrollbar thumb */
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Hover color for the scrollbar thumb */
+}
+
+.default-font {
+  font-size: 14px !important;
+  padding: 5px 0;
+}
+p {
+  margin-left: 8px 0;
+}
+ul {
+  padding-left: 20px; /* Indentation for bullets */
+  margin: 8px 0;
+}
+li {
+  margin-bottom: 8px; /* Spacing between list items */
+}
