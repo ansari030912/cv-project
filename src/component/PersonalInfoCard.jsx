@@ -13,7 +13,7 @@ const PersonalInfoCard = () => {
 
   return (
     <form>
-      <h2 className="font-bold text-3xl text-gray-700">Personal Detail</h2>
+      <h2 className="font-bold text-3xl text-blue-500">Personal Detail</h2>
       <br />
       <div>
         <label

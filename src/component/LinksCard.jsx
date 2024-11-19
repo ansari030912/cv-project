@@ -30,7 +30,7 @@ const LinksCard = () => {
 
   return (
     <div className="w-full mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Links</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-blue-500">Links</h2>
       <p className="text-gray-600 mb-6">
         Add links to your profiles or websites below.
       </p>

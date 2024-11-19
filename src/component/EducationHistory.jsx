@@ -39,7 +39,7 @@ const EducationHistory = () => {
 
   return (
     <div className="w-full mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Education</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-blue-500">Education</h2>
       <p className="text-gray-600 mb-6">
         Add your educational background below.
       </p>

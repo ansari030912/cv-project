@@ -30,7 +30,7 @@ const CoursesCard = () => {
 
   return (
     <div className="w-full mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Courses</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-blue-500">Courses</h2>
       <p className="text-gray-600 mb-6">
         Add details of courses you've completed below.
       </p>

@@ -20,7 +20,7 @@ const SummaryCard = () => {
 
   return (
     <div>
-      <h2 className="font-bold text-3xl text-gray-700">Summary</h2>
+      <h2 className="font-bold text-3xl text-gray-700 text-blue-500">Summary</h2>
       <br />
       <div>
         <ReactQuill

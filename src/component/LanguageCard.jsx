@@ -47,7 +47,7 @@ const LanguageCard = () => {
 
   return (
     <div className="w-full mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Languages</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-blue-500">Languages</h2>
       <p className="text-gray-600 mb-6">
         Add the languages you know and your proficiency level.
       </p>

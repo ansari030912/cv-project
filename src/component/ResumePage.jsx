@@ -24,6 +24,8 @@ export default function ResumePage() {
   const links = useSelector((state) => state.links);
   const skills = useSelector((state) => state.skills);
   const summary = useSelector((state) => state.summary);
+  const order = useSelector((state) => state.order);
+  console.log("🚀 ~ ResumePage ~ order:", order)
 
   const [pages, setPages] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);

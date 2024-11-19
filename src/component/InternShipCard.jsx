@@ -38,7 +38,7 @@ const InternShipCard = () => {
 
   return (
     <div className="w-full mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Internships</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-blue-500">Internships</h2>
       <p className="text-gray-600 mb-6">
         Add details of your internships below.
       </p>

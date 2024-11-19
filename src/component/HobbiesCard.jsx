@@ -26,7 +26,7 @@ const HobbiesCard = () => {
 
   return (
     <div className="w-full mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Hobbies</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-blue-500">Hobbies</h2>
       <p className="text-gray-600 mb-4">
         Add a description of your hobbies below.
       </p>

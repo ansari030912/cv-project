@@ -30,7 +30,7 @@ const SkillsCard = () => {
 
   return (
     <div className="w-full max-w-full mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">Skills</h2>
+      <h2 className="text-2xl font-semibold mb-4 text-blue-500">Skills</h2>
       <p className="text-gray-600 mb-6">
         Add your skills and rate your proficiency.
       </p>
