@@ -15,6 +15,15 @@ const InternShipCard = () => {
   const dispatch = useDispatch();
 
   const handleFieldChange = (index, field, value) => {
+    const limits = {
+      job_title: 30,
+      company: 40,
+      city: 20,
+      description: 150,
+    };
+
+    // Enforce character limits
+    if (limits[field] && value.length > limits[field]) return;
     dispatch(updateInternshipField({ index, field, value }));
   };
 
@@ -23,7 +32,11 @@ const InternShipCard = () => {
   };
 
   const handleAddNewInternship = () => {
-    dispatch(addInternship());
+    if (internships.length < 3) {
+      dispatch(addInternship());
+    } else {
+      alert("You can only add up to 3 internships.");
+    }
   };
 
   const handleDeleteInternship = (index) => {
@@ -56,18 +69,16 @@ const InternShipCard = () => {
             <div className="text-lg font-semibold text-gray-800">
               {internship.job_title || "New Internship"}
             </div>
-            {/* Delete Button (Only show if there are multiple internships) */}
-            {internships.length > 1 && (
-              <div
-                className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent toggle when clicking delete
-                  handleDeleteInternship(index);
-                }}
-              >
-                <Trash2 className="h-5 w-5 text-red-500" />
-              </div>
-            )}
+            {/* Delete Button */}
+            <div
+              className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteInternship(index); // Delete any index, including the last one
+              }}
+            >
+              <Trash2 className="h-5 w-5 text-red-500" />
+            </div>
           </div>
 
           {/* Accordion Content */}
@@ -165,6 +176,20 @@ const InternShipCard = () => {
                   className="custom-quill"
                   style={{ width: "100%" }}
                 />
+                <p
+                  className={`text-sm mt-2 text-right ${
+                    internship.description.length < 100
+                      ? "text-gray-500"
+                      : internship.description.length <= 120
+                      ? "text-yellow-500"
+                      : internship.description.length <= 150
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
+                  <span className="text-gray-500">Character Limit:</span>{" "}
+                  {internship.description.length}/{150}
+                </p>
               </div>
             </>
           )}
@@ -173,7 +198,12 @@ const InternShipCard = () => {
 
       <button
         onClick={handleAddNewInternship}
-        className="mt-4 bg-blue-500 text-white font-semibold py-2 px-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+        className={`mt-4 ${
+          internships.length >= 3
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-600"
+        } text-white font-semibold py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
+        disabled={internships.length >= 3}
       >
         + Add new internship
       </button>

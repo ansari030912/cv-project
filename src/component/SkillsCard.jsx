@@ -13,6 +13,7 @@ const SkillsCard = () => {
   const dispatch = useDispatch();
 
   const handleFieldChange = (index, field, value) => {
+    if (field === "name" && value.length > 10) return; // Limit skill name to 10 characters
     dispatch(updateSkillField({ index, field, value }));
   };
 
@@ -21,11 +22,15 @@ const SkillsCard = () => {
   };
 
   const handleAddNewSkill = () => {
-    dispatch(addSkill());
+    if (skills.length < 5) {
+      dispatch(addSkill());
+    } else {
+      alert("You can only add up to 5 skills.");
+    }
   };
 
   const handleDeleteSkill = (index) => {
-    dispatch(deleteSkill(index));
+    dispatch(deleteSkill(index)); // Delete any index, including the last one
   };
 
   return (
@@ -49,18 +54,16 @@ const SkillsCard = () => {
             </div>
             <div className="text-sm text-gray-600">Level: {skill.level}</div>
 
-            {/* Delete Button (Visible only if there are multiple skills) */}
-            {skills.length > 1 && (
-              <div
-                className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent toggle when clicking delete
-                  handleDeleteSkill(index);
-                }}
-              >
-                <Trash2 className="h-5 w-5 text-red-500" />
-              </div>
-            )}
+            {/* Delete Button: Always Visible */}
+            <div
+              className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent toggle when clicking delete
+                handleDeleteSkill(index);
+              }}
+            >
+              <Trash2 className="h-5 w-5 text-red-500" />
+            </div>
           </div>
 
           {skill.isOpen && (
@@ -105,7 +108,12 @@ const SkillsCard = () => {
 
       <button
         onClick={handleAddNewSkill}
-        className="mt-4 bg-blue-500 text-white font-semibold py-2 px-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+        className={`mt-4 ${
+          skills.length >= 5
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-600"
+        } text-white font-semibold py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
+        disabled={skills.length >= 5}
       >
         + Add one more skill
       </button>

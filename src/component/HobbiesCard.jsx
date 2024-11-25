@@ -1,21 +1,45 @@
 import React from "react";
 import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setHobbiesDescription } from "../redux/hobbiesSlice";
-import "react-quill/dist/quill.snow.css";
 
 const HobbiesCard = () => {
   const hobbies = useSelector((state) => state.hobbies);
   const dispatch = useDispatch();
-  const [isHobbiesAccordionOpen, setIsHobbiesAccordionOpen] =
-    React.useState(true);
 
-  const handleDescriptionChange = (value) => {
-    dispatch(setHobbiesDescription(value));
+  const calculateCharCount = (value) => {
+    // Remove HTML tags and normalize spaces for plain text character count
+    const plainText = value
+      .replace(/<\/?[^>]+(>|$)/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
+
+    // Count the number of line breaks (<p> tags)
+    let lineBreaks = (value.match(/<p>/g) || []).length;
+
+    // If content is empty, no character count
+    if (plainText === "") return 0;
+
+    // Exclude the first paragraph from the line break count
+    lineBreaks = Math.max(0, lineBreaks - 1);
+
+    // Total character count = plain text + (lineBreaks * 50)
+    return plainText.length + lineBreaks * 50;
   };
 
-  const toggleHobbiesAccordion = () => {
-    setIsHobbiesAccordionOpen((prev) => !prev);
+  const handleDescriptionChange = (value) => {
+    const charCount = calculateCharCount(value);
+
+    // Prevent adding characters if the limit is reached
+    if (charCount > 250 && calculateCharCount(hobbies.description) === 250) {
+      return;
+    }
+
+    // Allow changes if within the limit or content is being removed
+    if (charCount <= 250 || value.length < hobbies.description.length) {
+      dispatch(setHobbiesDescription(value));
+    }
   };
 
   const modules = {
@@ -24,27 +48,40 @@ const HobbiesCard = () => {
 
   const formats = ["bold", "italic", "underline", "strike", "list", "bullet"];
 
+  const charCount = calculateCharCount(hobbies.description);
+  const exceededChars = charCount > 250 ? charCount - 250 : 0;
+
   return (
-    <div className="w-full mx-auto">
-      <h2 className="text-2xl font-semibold mb-4 text-blue-500">Hobbies</h2>
-      <p className="text-gray-600 mb-4">
-        Add a description of your hobbies below.
-      </p>
-      <div className="mb-4 border border-gray-200">
-        {isHobbiesAccordionOpen && (
-          <div>
-            <ReactQuill
-              theme="snow"
-              value={hobbies.description}
-              onChange={handleDescriptionChange}
-              modules={modules}
-              formats={formats}
-              placeholder="Start writing here..."
-              className="custom-quill"
-              style={{ width: "100%" }}
-            />
-          </div>
-        )}
+    <div>
+      <div className="flex justify-between items-center">
+        <h2 className="font-bold text-3xl text-blue-500">Hobbies</h2>
+        <span
+          className={`text-lg ${
+            charCount > 250 ? "text-red-500" : "text-green-500"
+          }`}
+        >
+          <span className="text-gray-500">Character Limit:</span> {charCount}/
+          {250}
+        </span>
+      </div>
+      {charCount > 250 && (
+        <p className="text-red-500 text-sm mt-1">
+          You have exceeded the limit by <strong>{exceededChars}</strong>{" "}
+          characters. Please remove the extra characters to proceed.
+        </p>
+      )}
+      <br />
+      <div>
+        <ReactQuill
+          theme="snow"
+          value={hobbies.description}
+          onChange={handleDescriptionChange}
+          modules={modules}
+          formats={formats}
+          placeholder="Describe your hobbies..."
+          className="custom-quill"
+          style={{ width: "100%" }}
+        />
       </div>
     </div>
   );

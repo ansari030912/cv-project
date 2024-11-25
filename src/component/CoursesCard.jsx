@@ -5,6 +5,7 @@ import {
   updateCourseField,
   toggleCourseAccordion,
   deleteCourse,
+  setSingleOpenAccordion,
 } from "../redux/coursesSlice";
 import { Trash2 } from "lucide-react";
 
@@ -17,11 +18,21 @@ const CoursesCard = () => {
   };
 
   const handleAddCourse = () => {
-    dispatch(addCourse());
+    if (courses.length < 3) {
+      // Add a new course and ensure it is the only open accordion
+      dispatch(addCourse());
+      dispatch(setSingleOpenAccordion(courses.length)); // Open the newly added course
+    }
   };
 
   const handleToggleAccordion = (index) => {
-    dispatch(toggleCourseAccordion(index));
+    if (courses[index].isOpen) {
+      // Close the accordion if it's already open
+      dispatch(toggleCourseAccordion(index));
+    } else {
+      // Open the selected accordion and close others
+      dispatch(setSingleOpenAccordion(index));
+    }
   };
 
   const handleDeleteCourse = (index) => {
@@ -49,18 +60,16 @@ const CoursesCard = () => {
               {course.title || "New Course"}
             </div>
 
-            {/* Show delete icon only if there are more than one courses */}
-            {courses.length > 1 && (
-              <div
-                className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent toggle when clicking delete
-                  handleDeleteCourse(index);
-                }}
-              >
-                <Trash2 className="h-5 w-5 text-red-500" />
-              </div>
-            )}
+            {/* Show delete icon */}
+            <div
+              className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent toggle when clicking delete
+                handleDeleteCourse(index);
+              }}
+            >
+              <Trash2 className="h-5 w-5 text-red-500" />
+            </div>
           </div>
 
           {/* Accordion Content */}
@@ -131,7 +140,12 @@ const CoursesCard = () => {
       {/* Add New Course Button */}
       <button
         onClick={handleAddCourse}
-        className="mt-4 bg-blue-500 text-white font-semibold py-2 px-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+        className={`mt-4 ${
+          courses.length >= 3
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-600"
+        } text-white font-semibold py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
+        disabled={courses.length >= 3}
       >
         + Add new course
       </button>

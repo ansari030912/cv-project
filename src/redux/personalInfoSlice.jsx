@@ -2,7 +2,6 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   jobTitle: "",
-  visitors: "",
   firstName: "",
   lastName: "",
   city: "",

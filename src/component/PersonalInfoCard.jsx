@@ -28,27 +28,11 @@ const PersonalInfoCard = () => {
           className="bg-gray-50 mb-2 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           placeholder="Your job title"
           value={personalInfo.jobTitle}
+          maxLength={150} // Limit to 150 characters
           onChange={handleInputChange}
         />
       </div>
       <div className="grid gap-6 mb-6 md:grid-cols-2">
-        {/* <div>
-          <label
-            htmlFor="visitors"
-            className="block mb-2 text-sm font-medium text-gray-900"
-          >
-            Unique visitors (per month)
-          </label>
-          <input
-            type="number"
-            id="visitors"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-            placeholder="Visitors per month"
-            value={personalInfo.visitors}
-            onChange={handleInputChange}
-          />
-        </div> */}
-
         <div>
           <label
             htmlFor="firstName"
@@ -62,6 +46,7 @@ const PersonalInfoCard = () => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="John"
             value={personalInfo.firstName}
+            maxLength={15} // Limit to 15 characters
             onChange={handleInputChange}
           />
         </div>
@@ -79,6 +64,7 @@ const PersonalInfoCard = () => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Doe"
             value={personalInfo.lastName}
+            maxLength={15} // Limit to 15 characters
             onChange={handleInputChange}
           />
         </div>
@@ -96,6 +82,7 @@ const PersonalInfoCard = () => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Your city"
             value={personalInfo.city}
+            maxLength={14} // Limit to 14 characters
             onChange={handleInputChange}
           />
         </div>
@@ -113,6 +100,7 @@ const PersonalInfoCard = () => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="Your country"
             value={personalInfo.country}
+            maxLength={14} // Limit to 14 characters
             onChange={handleInputChange}
           />
         </div>
@@ -129,8 +117,8 @@ const PersonalInfoCard = () => {
             id="phone"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="123-456-7890"
-            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
             value={personalInfo.phone}
+            maxLength={15} // Limit to 15 characters
             onChange={handleInputChange}
           />
         </div>
@@ -148,6 +136,7 @@ const PersonalInfoCard = () => {
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
             placeholder="john.doe@example.com"
             value={personalInfo.email}
+            maxLength={25} // Limit to 25 characters
             onChange={handleInputChange}
           />
         </div>

@@ -13,6 +13,7 @@ const LanguageCard = () => {
   const dispatch = useDispatch();
 
   const handleFieldChange = (index, field, value) => {
+    if (field === "language" && value.length > 20) return; // Limit language name to 20 characters
     dispatch(updateLanguageField({ index, field, value }));
   };
 
@@ -21,11 +22,15 @@ const LanguageCard = () => {
   };
 
   const handleAddNewLanguage = () => {
-    dispatch(addLanguage());
+    if (languages.length < 4) {
+      dispatch(addLanguage());
+    } else {
+      alert("You can only add up to 4 languages.");
+    }
   };
 
   const handleDeleteLanguage = (index) => {
-    dispatch(deleteLanguage(index));
+    dispatch(deleteLanguage(index)); // Delete the selected language
   };
 
   const getProficiencyLabel = (level) => {
@@ -69,6 +74,7 @@ const LanguageCard = () => {
               <div className="text-sm text-gray-600">
                 {getProficiencyLabel(lang.proficiency)}
               </div>
+              {/* Delete Button */}
               <div
                 className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer"
                 onClick={(e) => {
@@ -97,6 +103,9 @@ const LanguageCard = () => {
                   placeholder="Enter language (e.g., English)"
                   className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm p-2.5 focus:ring-blue-500 focus:border-blue-500"
                 />
+                <p className="text-sm text-gray-500 mt-1">
+                  {lang.language.length}/20 characters
+                </p>
               </div>
 
               <div className="mb-4">
@@ -129,7 +138,12 @@ const LanguageCard = () => {
       {/* Add New Language Button */}
       <button
         onClick={handleAddNewLanguage}
-        className="mt-4 bg-blue-500 text-white font-semibold py-2 px-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+        className={`mt-4 ${
+          languages.length >= 4
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-600"
+        } text-white font-semibold py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
+        disabled={languages.length >= 4}
       >
         + Add new language
       </button>

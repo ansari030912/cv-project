@@ -18,7 +18,9 @@ const internshipsSlice = createSlice({
   initialState,
   reducers: {
     addInternship: (state) => {
+      if (state.length >= 3) return; // Prevent adding more than 3 entries
       const newId = state.length ? state[state.length - 1].id + 1 : 1;
+      state.forEach((internship) => (internship.isOpen = false)); // Close all accordions
       state.push({
         id: newId,
         job_title: "",
@@ -27,7 +29,7 @@ const internshipsSlice = createSlice({
         description: "",
         start_date: "",
         end_date: "",
-        isOpen: true, // New internships start open by default
+        isOpen: true, // Open the new accordion
       });
     },
     updateInternshipField: (state, action) => {
@@ -36,7 +38,10 @@ const internshipsSlice = createSlice({
     },
     toggleInternshipAccordion: (state, action) => {
       const index = action.payload;
-      state[index].isOpen = !state[index].isOpen;
+      state[index].isOpen = !state[index].isOpen; // Toggle open/close
+      state.forEach((internship, i) => {
+        if (i !== index) internship.isOpen = false; // Close all others
+      });
     },
     deleteInternship: (state, action) => {
       const index = action.payload;
@@ -51,4 +56,5 @@ export const {
   toggleInternshipAccordion,
   deleteInternship,
 } = internshipsSlice.actions;
+
 export default internshipsSlice.reducer;

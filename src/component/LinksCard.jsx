@@ -13,6 +13,7 @@ const LinksCard = () => {
   const dispatch = useDispatch();
 
   const handleFieldChange = (index, field, value) => {
+    if (field === "label" && value.length > 20) return; // Limit label to 20 characters
     dispatch(updateLinkField({ index, field, value }));
   };
 
@@ -21,11 +22,15 @@ const LinksCard = () => {
   };
 
   const handleAddNewLink = () => {
-    dispatch(addLink());
+    if (links.length < 3) {
+      dispatch(addLink());
+    } else {
+      alert("You can only add up to 3 links.");
+    }
   };
 
   const handleDeleteLink = (index) => {
-    dispatch(deleteLink(index));
+    dispatch(deleteLink(index)); // Delete any index, including the last one
   };
 
   return (
@@ -40,7 +45,6 @@ const LinksCard = () => {
           key={link.id}
           className="mb-4 border border-gray-200 relative group"
         >
-          {/* Accordion Header */}
           <div
             onClick={() => handleToggleAccordion(index)}
             className="flex justify-between items-center p-4 cursor-pointer bg-gray-100"
@@ -49,21 +53,18 @@ const LinksCard = () => {
               {link.label || "New Link"}
             </div>
 
-            {/* Delete Button (Only show if there are multiple links) */}
-            {links.length > 1 && (
-              <div
-                className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer"
-                onClick={(e) => {
-                  e.stopPropagation(); // Prevent toggle when clicking delete
-                  handleDeleteLink(index);
-                }}
-              >
-                <Trash2 className="h-5 w-5 text-red-500" />
-              </div>
-            )}
+            {/* Delete Button: Always Visible */}
+            <div
+              className="invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation(); // Prevent toggle when clicking delete
+                handleDeleteLink(index);
+              }}
+            >
+              <Trash2 className="h-5 w-5 text-red-500" />
+            </div>
           </div>
 
-          {/* Accordion Content */}
           {link.isOpen && (
             <div className="p-4 bg-white">
               <div className="mb-4">
@@ -79,6 +80,9 @@ const LinksCard = () => {
                   placeholder="Enter label (e.g., LinkedIn)"
                   className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm p-2.5 focus:ring-blue-500 focus:border-blue-500"
                 />
+                <p className="text-sm text-gray-500 mt-1">
+                  {link.label.length}/20 characters
+                </p>
               </div>
 
               <div className="mb-4">
@@ -102,7 +106,12 @@ const LinksCard = () => {
 
       <button
         onClick={handleAddNewLink}
-        className="mt-4 bg-blue-500 text-white font-semibold py-2 px-4 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+        className={`mt-4 ${
+          links.length >= 3
+            ? "bg-gray-300 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-600"
+        } text-white font-semibold py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50`}
+        disabled={links.length >= 3}
       >
         + Add new link
       </button>

@@ -15,6 +15,7 @@ import PersonalInfoCard from "./component/PersonalInfoCard";
 import SkillsCard from "./component/SkillsCard";
 import SummaryCard from "./component/SummaryCrard";
 import ResumePageThree from "./component/ResumePageThree";
+import ResumePage from "./component/ResumePage";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -166,6 +167,7 @@ const App = () => {
         className="flex flex-col justify-start"
       >
         <ResumePageThree />
+        {/* <ResumePage /> */}
       </div>
     </div>
   );

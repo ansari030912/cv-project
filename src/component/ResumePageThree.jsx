@@ -462,6 +462,9 @@ export default function ResumePageThree() {
                     style={{
                       fontSize: "14px",
                       color: "#A3ADB3",
+                      // textAlign: "justify",
+                      wordWrap: "break-word", // Ensures long words wrap to the next line
+                      overflowWrap: "break-word",
                     }}
                     dangerouslySetInnerHTML={{ __html: hobbies.description }}
                   ></div>
@@ -493,7 +496,15 @@ export default function ResumePageThree() {
                   </h2>
                   <div
                     className="default-font"
-                    style={{ color: "#a5a5a5", textAlign: "justify" }}
+                    style={{
+                      color: "#a5a5a5",
+                      textAlign: "justify",
+                      overflowWrap: "break-word", // Break words if they exceed the container width
+                      wordWrap: "break-word", // Legacy support for older browsers
+                      wordBreak: "break-word", // Additional word-breaking for better compatibility
+                      whiteSpace: "pre-wrap", // Preserve line breaks and spacing
+                      paddingTop: "10px",
+                    }}
                   >
                     <p
                       dangerouslySetInnerHTML={{ __html: summary.description }}
@@ -565,9 +576,12 @@ export default function ResumePageThree() {
                           color: "#a5a5a5",
                           marginBottom: "3px",
                           textAlign: "justify",
+                          wordWrap: "break-word", // Ensures long words wrap to the next line
+                          overflowWrap: "break-word", // Ensures proper wrapping for overflowing content
                         }}
                         dangerouslySetInnerHTML={{ __html: edu.description }}
                       ></div>
+
                       <p
                         style={{
                           fontSize: "14px",
@@ -576,10 +590,23 @@ export default function ResumePageThree() {
                           textAlign: "right",
                         }}
                       >
-                        <i>
-                          {new Date(edu.start_date).toLocaleDateString()} -{" "}
-                          {new Date(edu.end_date).toLocaleDateString()}
-                        </i>
+                        <span>
+                          {edu.start_date
+                            ? new Intl.DateTimeFormat("en-GB", {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              }).format(new Date(edu.start_date))
+                            : "Invalid Date"}{" "}
+                          -{" "}
+                          {edu.end_date
+                            ? new Intl.DateTimeFormat("en-GB", {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                              }).format(new Date(edu.end_date))
+                            : "Invalid Date"}
+                        </span>
                       </p>
                     </div>
                   ))}
@@ -649,6 +676,8 @@ export default function ResumePageThree() {
                           color: "#a5a5a5",
                           marginBottom: "3px",
                           textAlign: "justify",
+                          wordWrap: "break-word", // Ensures long words wrap to the next line
+                          overflowWrap: "break-word",
                         }}
                         dangerouslySetInnerHTML={{ __html: job.description }}
                       ></div>
