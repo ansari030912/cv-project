@@ -19,13 +19,10 @@ export default function ResumePageThree() {
   const employment = useSelector((state) => state.employment);
   const hobbies = useSelector((state) => state.hobbies);
   const internships = useSelector((state) => state.internships);
-  console.log("🚀 ~ ResumePageThree ~ internships:", internships);
   const languages = useSelector((state) => state.languages);
   const links = useSelector((state) => state.links);
-  console.log("🚀 ~ ResumePageThree ~ links:", links);
   const skills = useSelector((state) => state.skills);
   const summary = useSelector((state) => state.summary);
-  console.log("🚀 ~ ResumePageThree ~ summary:", summary);
   const RightOrder = useSelector((state) => state.order.rightComponents);
   const leftOrder = useSelector((state) => state.order.leftComponents);
 
