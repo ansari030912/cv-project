@@ -19,10 +19,13 @@ export default function ResumePageThree() {
   const employment = useSelector((state) => state.employment);
   const hobbies = useSelector((state) => state.hobbies);
   const internships = useSelector((state) => state.internships);
+  console.log("🚀 ~ ResumePageThree ~ internships:", internships);
   const languages = useSelector((state) => state.languages);
   const links = useSelector((state) => state.links);
+  console.log("🚀 ~ ResumePageThree ~ links:", links);
   const skills = useSelector((state) => state.skills);
   const summary = useSelector((state) => state.summary);
+  console.log("🚀 ~ ResumePageThree ~ summary:", summary);
   const RightOrder = useSelector((state) => state.order.rightComponents);
   const leftOrder = useSelector((state) => state.order.leftComponents);
 
@@ -139,7 +142,13 @@ export default function ResumePageThree() {
                   paddingRight: "22px",
                 }}
               >
-                {personalInfo.firstName} {personalInfo.lastName}
+                {(personalInfo.firstName?.trim() ||
+                personalInfo.lastName?.trim()
+                  ? `${personalInfo.firstName?.trim() || ""} ${
+                      personalInfo.lastName?.trim() || ""
+                    }`.trim()
+                  : "Your Name"
+                ).toUpperCase()}
               </h1>
               <h2
                 style={{
@@ -154,9 +163,13 @@ export default function ResumePageThree() {
                 <strong>
                   <b>JOB TITLE •</b>
                 </strong>{" "}
-                <i>{personalInfo.jobTitle}</i>
+                <i>
+                  {personalInfo.jobTitle?.trim() ||
+                    "Please write something about the job you are applying for"}
+                </i>
               </h2>
             </div>
+
             {/* )} */}
             <div style={{ display: "flex", flexDirection: "row", flexGrow: 1 }}>
               <div
@@ -302,21 +315,24 @@ export default function ResumePageThree() {
             <li style={{ display: "flex" }}>
               <span style={{ fontSize: "16px" }}>📍 </span>
               <span style={{ marginTop: "0px" }}>
-                {personalInfo.country} , {personalInfo.city}
+                {personalInfo.country?.trim() || "Country"} ,{" "}
+                {personalInfo.city?.trim() || "City"}
               </span>
             </li>
             <li>
-              ✉️ <span>{personalInfo.email}</span>
+              ✉️ <span>{personalInfo.email?.trim() || "Email"}</span>
             </li>
             <li>
-              📞 <span>{personalInfo.phone}</span>
+              📞 <span>{personalInfo.phone?.trim() || "Phone Number"}</span>
             </li>
           </ul>
         </section>
         {RightOrder.map((item) => {
           switch (item.component) {
             case "SkillsCard":
-              return (
+              return skills.length <= 0 ? (
+                ""
+              ) : (
                 <section className="px-7" key={item.name}>
                   <h1
                     style={{
@@ -338,16 +354,24 @@ export default function ResumePageThree() {
                       color: "#A3ADB3",
                     }}
                   >
-                    {skills.map((skill, index) => (
-                      <li key={index} style={{ marginBottom: "8px" }}>
-                        • {skill.name} <br />
+                    {skills && skills.length > 0 ? (
+                      skills.map((skill, index) => (
+                        <li key={index} style={{ marginBottom: "8px" }}>
+                          • {skill.name?.trim() || "Add Skill"} <br />
+                        </li>
+                      ))
+                    ) : (
+                      <li style={{ marginBottom: "8px" }}>
+                        • No skills available
                       </li>
-                    ))}
+                    )}
                   </ul>
                 </section>
               );
             case "LinksCard":
-              return (
+              return links.length <= 0 ? (
+                ""
+              ) : (
                 <section className="px-7" key={item.name}>
                   <h1
                     style={{
@@ -371,7 +395,7 @@ export default function ResumePageThree() {
                   >
                     {links.map((link, i) => (
                       <li
-                        key={link.id}
+                        key={link.id || i}
                         style={{
                           marginBottom: "8px",
                           display: "flex",
@@ -379,12 +403,12 @@ export default function ResumePageThree() {
                       >
                         🔗
                         <a
-                          href={link.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          href={link.url?.trim() || "#"}
+                          target={link.url ? "_blank" : "_self"}
+                          rel={link.url ? "noopener noreferrer" : undefined}
                           style={{ color: "#80a6ff", paddingLeft: "4px" }}
                         >
-                          {link.label}
+                          {link.label?.trim() || "Add Link"}
                         </a>
                       </li>
                     ))}
@@ -392,7 +416,9 @@ export default function ResumePageThree() {
                 </section>
               );
             case "LanguageCard":
-              return (
+              return languages.length <= 0 ? (
+                ""
+              ) : (
                 <section className="px-7" key={item.name}>
                   <h1
                     style={{
@@ -423,7 +449,7 @@ export default function ResumePageThree() {
                           justifyContent: "space-between",
                         }}
                       >
-                        <i>{language.language || "N/A"}</i>
+                        <i>{language.language || "Add Language"}</i>
                         <div>
                           {language.proficiency === 5
                             ? "Native"
@@ -462,11 +488,16 @@ export default function ResumePageThree() {
                     style={{
                       fontSize: "14px",
                       color: "#A3ADB3",
-                      // textAlign: "justify",
                       wordWrap: "break-word", // Ensures long words wrap to the next line
                       overflowWrap: "break-word",
                     }}
-                    dangerouslySetInnerHTML={{ __html: hobbies.description }}
+                    dangerouslySetInnerHTML={{
+                      __html:
+                        hobbies.description?.trim().replace(/<[^>]*>/g, "")
+                          .length > 0
+                          ? hobbies.description
+                          : "<p>Please add details about your hobbies.</p>",
+                    }}
                   ></div>
                 </section>
               );
@@ -507,13 +538,25 @@ export default function ResumePageThree() {
                     }}
                   >
                     <p
-                      dangerouslySetInnerHTML={{ __html: summary.description }}
+                      dangerouslySetInnerHTML={{
+                        __html: (() => {
+                          const strippedDescription = summary.description
+                            ? summary.description.replace(/<[^>]*>/g, "").trim()
+                            : "";
+
+                          return strippedDescription.length > 0
+                            ? summary.description
+                            : "Please write something about yourself";
+                        })(),
+                      }}
                     ></p>
                   </div>
                 </section>
               );
             case "EducationHistory":
-              return (
+              return education.length <= 0 ? (
+                ""
+              ) : (
                 <section className="px-7" key={item.name}>
                   <h2
                     style={{
@@ -528,92 +571,103 @@ export default function ResumePageThree() {
                   >
                     Education
                   </h2>
-                  {education.map((edu) => (
-                    <div key={edu.id} style={{ marginBottom: "15px" }}>
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                        }}
-                      >
-                        <p
-                          style={{
-                            fontSize: "18px",
-                            marginBottom: "5px",
-                          }}
+                  {education && education.length > 0
+                    ? education.map((edu) => (
+                        <div
+                          key={edu.id || edu.degree}
+                          style={{ marginBottom: "15px" }}
                         >
-                          <span
-                            className="font-bold"
-                            style={{ color: "#80A6FF" }}
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "space-between",
+                            }}
                           >
-                            {edu.degree}
-                          </span>
-                        </p>
-                        <i
-                          className="font-semibold text-nowrap"
-                          style={{
-                            fontSize: "14px",
-                            marginBottom: "5px",
-                            color: "gray",
-                          }}
-                        >
-                          {edu.city}
-                        </i>
-                      </div>
-                      <i
-                        className="font-bold text-nowrap flex justify-start"
-                        style={{
-                          fontSize: "16px",
-                          marginBottom: "3px",
-                          color: "#808080",
-                        }}
-                      >
-                        • {edu.school_name}
-                      </i>
-                      <div
-                        style={{
-                          fontSize: "14px",
-                          color: "#a5a5a5",
-                          marginBottom: "3px",
-                          textAlign: "justify",
-                          wordWrap: "break-word", // Ensures long words wrap to the next line
-                          overflowWrap: "break-word", // Ensures proper wrapping for overflowing content
-                        }}
-                        dangerouslySetInnerHTML={{ __html: edu.description }}
-                      ></div>
+                            <p
+                              style={{
+                                fontSize: "18px",
+                                marginBottom: "5px",
+                              }}
+                            >
+                              <span
+                                className="font-bold"
+                                style={{ color: "#80A6FF" }}
+                              >
+                                {edu.degree || "Degree or Study"}
+                              </span>
+                            </p>
+                            <i
+                              className="font-semibold text-nowrap"
+                              style={{
+                                fontSize: "14px",
+                                marginBottom: "5px",
+                                color: "gray",
+                              }}
+                            >
+                              {edu.city || "City"}
+                            </i>
+                          </div>
+                          <i
+                            className="font-bold text-nowrap flex justify-start"
+                            style={{
+                              fontSize: "16px",
+                              marginBottom: "3px",
+                              color: "#808080",
+                            }}
+                          >
+                            • {edu.school_name || "School name"}
+                          </i>
+                          <div
+                            style={{
+                              fontSize: "14px",
+                              color: "#a5a5a5",
+                              marginBottom: "3px",
+                              textAlign: "justify",
+                              wordWrap: "break-word",
+                              overflowWrap: "break-word",
+                            }}
+                            dangerouslySetInnerHTML={{
+                              __html: edu.description?.trim()
+                                ? edu.description
+                                : "Additional details.",
+                            }}
+                          ></div>
 
-                      <p
-                        style={{
-                          fontSize: "14px",
-                          color: "gray",
-                          marginBottom: "5px",
-                          textAlign: "right",
-                        }}
-                      >
-                        <span>
-                          {edu.start_date
-                            ? new Intl.DateTimeFormat("en-GB", {
-                                day: "2-digit",
-                                month: "short",
-                                year: "numeric",
-                              }).format(new Date(edu.start_date))
-                            : "Invalid Date"}{" "}
-                          -{" "}
-                          {edu.end_date
-                            ? new Intl.DateTimeFormat("en-GB", {
-                                day: "2-digit",
-                                month: "short",
-                                year: "numeric",
-                              }).format(new Date(edu.end_date))
-                            : "Invalid Date"}
-                        </span>
-                      </p>
-                    </div>
-                  ))}
+                          <p
+                            style={{
+                              fontSize: "14px",
+                              color: "gray",
+                              marginBottom: "5px",
+                              textAlign: "right",
+                            }}
+                          >
+                            <span>
+                              {edu.start_date
+                                ? new Intl.DateTimeFormat("en-GB", {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+                                  }).format(new Date(edu.start_date))
+                                : "Start date"}{" "}
+                              -{" "}
+                              {edu.end_date
+                                ? new Intl.DateTimeFormat("en-GB", {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+                                  }).format(new Date(edu.end_date))
+                                : "End date"}
+                            </span>
+                          </p>
+                        </div>
+                      ))
+                    : ""}
                 </section>
               );
             case "EmploymentHistoryCard":
-              return (
+              return employment.length <= 0 ? (
+                ""
+              ) : (
                 <section className="px-7" key={item.name}>
                   <h2
                     style={{
@@ -629,7 +683,10 @@ export default function ResumePageThree() {
                     Employment History
                   </h2>
                   {employment.map((job) => (
-                    <div key={job.id} style={{ marginBottom: "15px" }}>
+                    <div
+                      key={job.id || job.job_title}
+                      style={{ marginBottom: "15px" }}
+                    >
                       <div
                         style={{
                           display: "flex",
@@ -646,7 +703,7 @@ export default function ResumePageThree() {
                             className="font-semibold"
                             style={{ color: "#80A6FF" }}
                           >
-                            {job.job_title}
+                            {job.job_title || "Job Title"}
                           </span>
                         </b>
                         <div
@@ -656,7 +713,7 @@ export default function ResumePageThree() {
                           }}
                         >
                           <i className="font-bold" style={{ color: "#a5a5a5" }}>
-                            {job.city}
+                            {job.city || "City"}
                           </i>
                         </div>
                       </div>
@@ -668,7 +725,7 @@ export default function ResumePageThree() {
                           color: "#808080",
                         }}
                       >
-                        • {job.employer}
+                        • {job.employer || "Employer or Interny"}
                       </i>
                       <div
                         style={{
@@ -676,10 +733,14 @@ export default function ResumePageThree() {
                           color: "#a5a5a5",
                           marginBottom: "3px",
                           textAlign: "justify",
-                          wordWrap: "break-word", // Ensures long words wrap to the next line
+                          wordWrap: "break-word",
                           overflowWrap: "break-word",
                         }}
-                        dangerouslySetInnerHTML={{ __html: job.description }}
+                        dangerouslySetInnerHTML={{
+                          __html: job.description?.trim()
+                            ? job.description
+                            : "Description.",
+                        }}
                       ></div>
                       <div
                         style={{
@@ -691,10 +752,15 @@ export default function ResumePageThree() {
                         }}
                       >
                         <p>
-                          {new Date(job.start_date).toLocaleDateString()} -{" "}
+                          {job.start_date
+                            ? new Date(job.start_date).toLocaleDateString()
+                            : "Start Date"}{" "}
+                          -{" "}
                           {job.is_current
                             ? "Present"
-                            : new Date(job.end_date).toLocaleDateString()}
+                            : job.end_date
+                            ? new Date(job.end_date).toLocaleDateString()
+                            : "End Date"}
                         </p>
                       </div>
                     </div>
@@ -702,7 +768,9 @@ export default function ResumePageThree() {
                 </section>
               );
             case "CoursesCard":
-              return (
+              return courses.length <= 0 ? (
+                ""
+              ) : (
                 <section className="px-7" key={item.name}>
                   <h2
                     style={{
@@ -718,7 +786,10 @@ export default function ResumePageThree() {
                     Course
                   </h2>
                   {courses.map((course) => (
-                    <div key={course.id} style={{ marginBottom: "15px" }}>
+                    <div
+                      key={course.id || course.title || Math.random()}
+                      style={{ marginBottom: "15px" }}
+                    >
                       <div
                         style={{
                           display: "flex",
@@ -733,7 +804,9 @@ export default function ResumePageThree() {
                             marginBottom: "5px",
                           }}
                         >
-                          {course.title}
+                          {course.title && course.title.trim().length > 0
+                            ? course.title
+                            : "Course Title"}
                         </p>
                         <p
                           style={{
@@ -742,10 +815,13 @@ export default function ResumePageThree() {
                             marginBottom: "5px",
                           }}
                         >
-                          {new Date(course.start_date).toLocaleDateString()} -{" "}
-                          {course.isOpen
-                            ? "Ongoing"
-                            : new Date(course.end_date).toLocaleDateString()}
+                          {course.start_date
+                            ? new Date(course.start_date).toLocaleDateString()
+                            : "Start Date"}{" "}
+                          -{" "}
+                          {course.end_date
+                            ? new Date(course.end_date).toLocaleDateString()
+                            : "End Date"}
                         </p>
                       </div>
                       <div
@@ -756,7 +832,10 @@ export default function ResumePageThree() {
                         }}
                       >
                         <p className="font-semibold text-nowrap">
-                          {course.institution}
+                          {course.institution &&
+                          course.institution.trim().length > 0
+                            ? course.institution
+                            : "Institution"}
                         </p>
                       </div>
                     </div>
@@ -764,7 +843,9 @@ export default function ResumePageThree() {
                 </section>
               );
             case "InternShipCard":
-              return (
+              return internships.length <= 0 ? (
+                ""
+              ) : (
                 <section className="px-7" key={item.name}>
                   <h2
                     style={{
@@ -801,10 +882,10 @@ export default function ResumePageThree() {
                             fontSize: "18px",
                           }}
                         >
-                          {job.job_title || "N/A"}
+                          {job.job_title || "Job Title"}
                         </p>
                         <i style={{ color: "gray" }}>
-                          <b>{job.city || "City Not Available"}</b>
+                          <b>{job.city || "City"}</b>
                         </i>
                       </div>
                       <div
@@ -816,7 +897,7 @@ export default function ResumePageThree() {
                         }}
                       >
                         <i>
-                          <b>• {job.company || "Company Not Available"}</b>
+                          <b>• {job.company || "Company"}</b>
                         </i>
                       </div>
                       <div
@@ -826,11 +907,18 @@ export default function ResumePageThree() {
                           marginBottom: "10px",
                         }}
                         dangerouslySetInnerHTML={{
-                          __html:
-                            job.description ||
-                            "<p>Description Not Available</p>",
+                          __html: (() => {
+                            const sanitizedDescription = job.description
+                              ? job.description.replace(/<[^>]*>/g, "").trim()
+                              : "";
+
+                            return sanitizedDescription.length > 0
+                              ? job.description
+                              : "<p>Description</p>";
+                          })(),
                         }}
                       ></div>
+
                       <div
                         style={{
                           fontSize: "15px",
@@ -848,7 +936,7 @@ export default function ResumePageThree() {
                                   ? "Present"
                                   : new Date(job.end_date).toLocaleDateString()
                               }`
-                            : "Date Not Available"}
+                            : "Date"}
                         </p>
                       </div>
                     </div>
