@@ -304,7 +304,7 @@ export default function ResumePage() {
           >
             Links
           </h2>
-          <ul style={{ fontSize: "14px", marginLeft: "-20px" }}>
+          <ul style={{ fontSize: "14px",  }}>
             {links.map((link, i) => (
               <li
                 key={link.id}

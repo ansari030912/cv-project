@@ -386,8 +386,9 @@ export default function ResumePageThree() {
                   <ul
                     style={{
                       fontSize: "14px",
-                      marginLeft: "-20px",
+                      // marginLeft: "-20px",
                       color: "#A3ADB3",
+                      paddingLeft: "-20px",
                     }}
                   >
                     {links.map((link, i) => (
