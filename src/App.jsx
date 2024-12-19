@@ -25,7 +25,7 @@ const App = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsScreenSmall(window.innerWidth < 1440);
+      setIsScreenSmall(window.innerWidth < 1400);
     };
 
     handleResize(); // Check on initial render
@@ -150,17 +150,14 @@ const App = () => {
     <div>
       {isScreenSmall ? (
         <div className="text-center bg-yellow-200 text-yellow-800 p-4">
-          Minimum screen size required is 1440px
+          Minimum screen size required is 1400 x 768
         </div>
       ) : (
         <div
           style={{ maxWidth: "1870px", height: "100vh" }}
           className="p-4 mx-auto grid grid-cols-1 xl:grid-cols-2 gap-4"
         >
-          <div
-            className="container overflow-y-auto pl-20"
-            style={{ maxHeight: "100%", paddingRight: "33px" }}
-          >
+          <div className="container overflow-y-auto pl-20 max-h-full pr-8 w-[90%] 2xl:w-full">
             <div className="mb-4">
               <PersonalInfoCard />
             </div>
