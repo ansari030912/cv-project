@@ -29,7 +29,7 @@ export default function ResumePage() {
 
   const [pages, setPages] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [backgroundImage, setBackgroundImage] = useState("/bg-img-3.jpg");
+  const [backgroundImage] = useState("/bg-img-3.jpg");
   const leftContainerRef = useRef(null);
   const rightContainerRef = useRef(null);
 
