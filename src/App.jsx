@@ -155,7 +155,7 @@ const App = () => {
       ) : (
         <div
           style={{ maxWidth: "1870px", height: "100vh" }}
-          className="p-4 mx-auto grid grid-cols-1 2xl:grid-cols-2 gap-4"
+          className="p-4 mx-auto grid grid-cols-1 xl:grid-cols-2 gap-4"
         >
           <div
             className="container overflow-y-auto pl-20"
