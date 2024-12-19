@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   updateLeftComponents,
@@ -15,12 +15,26 @@ import PersonalInfoCard from "./component/PersonalInfoCard";
 import SkillsCard from "./component/SkillsCard";
 import SummaryCard from "./component/SummaryCrard";
 import ResumePageThree from "./component/ResumePageThree";
-import ResumePage from "./component/ResumePage";
 
 const App = () => {
   const dispatch = useDispatch();
   const leftComponents = useSelector((state) => state.order.leftComponents);
   const rightComponents = useSelector((state) => state.order.rightComponents);
+
+  const [isScreenSmall, setIsScreenSmall] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsScreenSmall(window.innerWidth < 1440);
+    };
+
+    handleResize(); // Check on initial render
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const moveComponent = (index, direction, section) => {
     const components =
@@ -49,7 +63,6 @@ const App = () => {
     components.map((item, index) => (
       <div key={`${item.name}-${index}`} className="mb-4 relative">
         <div className="absolute -left-16 flex flex-col">
-          {/* Up Button */}
           <button
             onClick={() => moveComponent(index, "up", section)}
             disabled={index === 0}
@@ -76,7 +89,6 @@ const App = () => {
             </svg>
           </button>
 
-          {/* Down Button */}
           <button
             onClick={() => moveComponent(index, "down", section)}
             disabled={index === components.length - 1}
@@ -117,7 +129,6 @@ const App = () => {
           {item.component === "HobbiesCard" && <HobbiesCard />}
         </span>
         <br />
-        {/* Add an <hr> only if it's not the last item */}
         {index < components.length - 1 && (
           <hr
             style={{
@@ -136,39 +147,47 @@ const App = () => {
     ));
 
   return (
-    <div
-      style={{ maxWidth: "1870px", height: "100vh" }}
-      className="p-4 mx-auto grid grid-cols-1 2xl:grid-cols-2 gap-4"
-    >
-      <div
-        className="container overflow-y-auto pl-20"
-        style={{ maxHeight: "100%", paddingRight: "33px" }}
-      >
-        <div className="mb-4">
-          <PersonalInfoCard />
+    <div>
+      {isScreenSmall ? (
+        <div className="text-center bg-yellow-200 text-yellow-800 p-4">
+          Minimum screen size required is 1440px
         </div>
-        <hr
-          style={{
-            border: "none",
-            height: "5px",
-            backgroundImage: "radial-gradient(circle, red 40%, transparent 0)",
-            backgroundSize: "20px 20px",
-            backgroundRepeat: "repeat-x",
-          }}
-        />
-        <br />
-        {renderSection(leftComponents, "left")}
-        <hr style={{ border: "1px solid green" }} />
-        <br />
-        {renderSection(rightComponents, "right")}
-      </div>
-      <div
-        style={{ maxWidth: "1366px", height: "100%" }}
-        className="flex flex-col justify-start"
-      >
-        <ResumePageThree />
-        {/* <ResumePage /> */}
-      </div>
+      ) : (
+        <div
+          style={{ maxWidth: "1870px", height: "100vh" }}
+          className="p-4 mx-auto grid grid-cols-1 2xl:grid-cols-2 gap-4"
+        >
+          <div
+            className="container overflow-y-auto pl-20"
+            style={{ maxHeight: "100%", paddingRight: "33px" }}
+          >
+            <div className="mb-4">
+              <PersonalInfoCard />
+            </div>
+            <hr
+              style={{
+                border: "none",
+                height: "5px",
+                backgroundImage:
+                  "radial-gradient(circle, red 40%, transparent 0)",
+                backgroundSize: "20px 20px",
+                backgroundRepeat: "repeat-x",
+              }}
+            />
+            <br />
+            {renderSection(leftComponents, "left")}
+            <hr style={{ border: "1px solid green" }} />
+            <br />
+            {renderSection(rightComponents, "right")}
+          </div>
+          <div
+            style={{ maxWidth: "1366px", height: "100%" }}
+            className="flex flex-col justify-start"
+          >
+            <ResumePageThree />
+          </div>
+        </div>
+      )}
     </div>
   );
 };
