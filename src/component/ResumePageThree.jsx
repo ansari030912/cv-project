@@ -349,6 +349,7 @@ export default function ResumePageThree() {
                       paddingLeft: "10px",
                       fontSize: "14px",
                       color: "#A3ADB3",
+                      paddingTop: "10px",
                     }}
                   >
                     {skills && skills.length > 0 ? (
@@ -389,6 +390,7 @@ export default function ResumePageThree() {
                       // marginLeft: "-20px",
                       color: "#A3ADB3",
                       paddingLeft: "-20px",
+                      paddingTop: "10px",
                     }}
                   >
                     {links.map((link, i) => (
