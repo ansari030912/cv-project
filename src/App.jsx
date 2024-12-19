@@ -28,7 +28,7 @@ const App = () => {
       setIsScreenSmall(window.innerWidth < 1400);
     };
 
-    handleResize(); // Check on initial render
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     return () => {
