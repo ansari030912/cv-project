@@ -409,7 +409,6 @@ export default function ResumePageThree() {
                   </ul>
                 </section>
               );
-
             case "LanguageCard":
               return languages.length <= 0 ? (
                 ""
