@@ -399,6 +399,7 @@ export default function ResumePageThree() {
                         style={{
                           marginBottom: "8px",
                           display: "flex",
+                          marginLeft: "-10px",
                         }}
                       >
                         🔗
