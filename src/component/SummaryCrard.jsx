@@ -54,7 +54,7 @@ const SummaryCard = () => {
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h2 className="font-bold text-3xl text-blue-500">Summary</h2>
+        <h2 className="text-2xl font-semibold mb-4 text-blue-500">Summary</h2>
         <span
           className={`text-lg ${
             charCount > 400 ? "text-red-500" : "text-green-500"
