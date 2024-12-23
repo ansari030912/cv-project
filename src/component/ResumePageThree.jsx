@@ -386,35 +386,30 @@ export default function ResumePageThree() {
                   </h1>
                   <ul
                     style={{
+                      paddingLeft: "10px",
                       fontSize: "14px",
-                      // marginLeft: "-20px",
                       color: "#A3ADB3",
-                      paddingLeft: "-20px",
                       paddingTop: "10px",
                     }}
                   >
-                    {links.map((link, i) => (
-                      <li
-                        key={link.id || i}
-                        style={{
-                          marginBottom: "8px",
-                          display: "flex",
-                        }}
-                      >
-                        🔗
-                        <a
-                          href={link.url?.trim() || "#"}
-                          target={link.url ? "_blank" : "_self"}
-                          rel={link.url ? "noopener noreferrer" : undefined}
-                          style={{ color: "#80a6ff", paddingLeft: "4px" }}
+                    {links && links.length > 0 ? (
+                      links.map((link, index) => (
+                        <li
+                          key={link.id}
+                          style={{ marginBottom: "8px", color: "#3B82F6" }}
                         >
-                          {link.label?.trim() || "Add Link"}
-                        </a>
+                          🔗 {link.label?.trim() || "Add Link"} <br />
+                        </li>
+                      ))
+                    ) : (
+                      <li  style={{ marginBottom: "8px", color: "#3B82F6" }}>
+                        🔗 No Links available
                       </li>
-                    ))}
+                    )}
                   </ul>
                 </section>
               );
+
             case "LanguageCard":
               return languages.length <= 0 ? (
                 ""
